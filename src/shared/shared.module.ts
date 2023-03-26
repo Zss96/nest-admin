@@ -3,8 +3,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SharedService } from './shared.service';
 import { Global } from '@nestjs/common/decorators';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { OperationLogInterceptor } from 'src/common/interceptors/operation-log';
 
 @Global()
 @Module({
@@ -25,13 +23,7 @@ import { OperationLogInterceptor } from 'src/common/interceptors/operation-log';
       }),
     }),
   ],
-  providers: [
-    SharedService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: OperationLogInterceptor,
-    },
-  ],
+  providers: [SharedService],
   exports: [SharedService],
 })
 export class SharedModule {}
