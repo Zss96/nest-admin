@@ -2,7 +2,11 @@ import { ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SharedService } from './shared.service';
+import { Global } from '@nestjs/common/decorators';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { OperationLogInterceptor } from 'src/common/interceptors/operation-log';
 
+@Global()
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -21,7 +25,13 @@ import { SharedService } from './shared.service';
       }),
     }),
   ],
-  providers: [SharedService],
+  providers: [
+    SharedService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: OperationLogInterceptor,
+    },
+  ],
   exports: [SharedService],
 })
 export class SharedModule {}
