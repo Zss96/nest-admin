@@ -1,5 +1,12 @@
 export interface IConfig {
   /**
+   * 后台管理jwt token密钥
+   */
+  jwt?: {
+    secret: string;
+  };
+
+  /**
    * 数据库配置
    */
   database?: {
@@ -12,5 +19,10 @@ export interface IConfig {
     autoLoadModels: boolean;
     synchronize?: boolean;
     logging?: any;
+  };
+  redis?: {
+    config: {
+      url: string;
+    };
   };
 }

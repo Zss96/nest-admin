@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div>uuid:{{code.uuid}}</div>
+      <div v-html="code.img"></div>
+      <button @click="getCode">获取code</button>
+    </div>
+    <script>
+      new Vue({
+        el: '#app',
+        data() {
+          return {
+            code: {},
+          };
+        },
+        create() {
+          this.getCode();
+        },
+        methods: {
+          getCode() {
+            axios.get('http://localhost:3000/captchaImage').then((res) => {
+              console.log('sres', res);
+              this.code = res.data;
+            });
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

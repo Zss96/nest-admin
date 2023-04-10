@@ -1,5 +1,9 @@
 import { IConfig } from './config.interface';
 export const Config: IConfig = {
+  jwt: {
+    secret: '123456',
+  },
+  //数据库配置
   database: {
     type: 'mysql', //数据库类型
     host: 'localhost', //数据库地址
@@ -10,5 +14,11 @@ export const Config: IConfig = {
     autoLoadModels: true, //模型自动加载，无需再配置处重复写实体
     synchronize: true, //自动加载的模型将被同步进数据库中，prod要关闭，否则可能会应为字段删除二导致数据丢失
     logging: false, //是否启用日记记录
+  },
+  //redis配置
+  redis: {
+    config: {
+      url: 'localhost:6379',
+    },
   },
 };
