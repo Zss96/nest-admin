@@ -21,6 +21,11 @@ import {
 @ApiBearerAuth()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+  @Get('list')
+  async getList(@Query() reqUserListDto: ReqUserListDto) {
+    return await this.usersService.getList(reqUserListDto);
+  }
+
   @Post()
   async addUser(@Body() reqAddUserDto: ReqAddUserDto) {
     return await this.usersService.addUser(reqAddUserDto);
@@ -28,11 +33,6 @@ export class UsersController {
   @Put()
   async editUser(@Body() reqUpdateUserDto: ReqUpdateUserDto) {
     return await this.usersService.updateUser(reqUpdateUserDto);
-  }
-
-  @Get('list')
-  async getList(@Query() reqUserListDto: ReqUserListDto) {
-    return await this.usersService.getList(reqUserListDto);
   }
 
   @Get(':id')

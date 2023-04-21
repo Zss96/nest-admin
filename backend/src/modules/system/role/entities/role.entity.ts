@@ -1,28 +1,47 @@
 import { IsNumber, IsString } from 'class-validator';
 import { BaseEntity } from 'src/entities/base.entity';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { ApiHideProperty } from '@nestjs/swagger';
+import { Menu } from '../../menu/entities/menu.entity';
 
 @Entity()
 export class Role extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
+  @Column({
+    comment: '角色名称',
+  })
   @IsString()
-  name: string;
+  role_name: string;
 
-  @Column()
+  @Column({
+    comment: '角色权限字符',
+  })
   @IsString()
   key: string;
 
-  @Column()
+  @Column({
+    comment: '排序',
+  })
   @IsNumber()
   order: number;
 
-  // @ManyToMany(() => Menu, (menu) => menu.roles)
+  @Column({
+    comment: '状态(1正常，0停用)',
+  })
+  status: number;
+
   @ApiHideProperty()
   @ManyToMany(() => User, (user) => user.roles)
   users: User[];
+
+  @ApiHideProperty()
+  @ManyToMany(() => Menu, (menu) => menu.roles)
+  @JoinColumn()
+  menus: Menu[];
 }

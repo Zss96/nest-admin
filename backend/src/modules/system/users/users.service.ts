@@ -17,8 +17,9 @@ export class UsersService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly roleService: RoleService,
   ) {}
-  getUserForName(user_name: string) {
-    const user = this.userRepository.find({
+  //通过名字查找用户
+  async getUserForName(user_name: string) {
+    const user = await this.userRepository.find({
       select: ['id', 'user_name', 'password', 'salt'],
       where: {
         user_name,
@@ -82,7 +83,7 @@ export class UsersService {
     if (reqUserListDto.phone) {
       where.phone = Like(`%${reqUserListDto.phone}`);
     }
-    const { page = 1, limit = 10 } = reqUserListDto;
+    const { page, limit } = reqUserListDto;
 
     const queryBuild = this.userRepository.createQueryBuilder('user');
     const reuslt = await queryBuild

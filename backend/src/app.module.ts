@@ -8,7 +8,7 @@ import configuration from './config/configuration';
 import { AuthModule } from './modules/system/auth/auth.module';
 import { UsersModule } from './modules/system/users/users.module';
 import { RoleModule } from './modules/system/role/role.module';
-import { MenuModule } from './menu/menu.module';
+import { MenuModule } from './modules/system/menu/menu.module';
 
 @Module({
   imports: [

@@ -5,10 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Role } from './entities/role.entity';
 import { User } from '../users/entities/user.entity';
 import { UsersModule } from '../users/users.module';
+import { MenuModule } from '../menu/menu.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Role, User]),
+    forwardRef(() => MenuModule),
     forwardRef(() => UsersModule),
   ],
   controllers: [RoleController],
