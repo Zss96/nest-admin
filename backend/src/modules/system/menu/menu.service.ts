@@ -40,6 +40,10 @@ export class MenuService {
     await this.menuRepository.save(reqAddMenuDto);
   }
 
+  async list(){
+    
+  }
+
   async findById(id: number) {
     return this.menuRepository.findOneBy({ id });
   }

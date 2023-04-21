@@ -30,4 +30,6 @@ export class ReqUserListDto extends PaginationDto {
   @Type()
   @IsString()
   phone?: string;
+
+  
 }
