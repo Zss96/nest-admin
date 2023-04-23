@@ -2,8 +2,12 @@ import { ReqUpdateRoleDto } from './../role/dto/req-role.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Menu } from './entities/menu.entity';
-import { In, Repository } from 'typeorm';
-import { ReqAddMenuDto, UpdateMenuDto } from './dto/req-menu.dto';
+import { FindOptionsWhere, In, Like, Repository } from 'typeorm';
+import {
+  ReqAddMenuDto,
+  ReqMenuListDto,
+  UpdateMenuDto,
+} from './dto/req-menu.dto';
 import { ApiException } from 'src/common/exceptions/api.exception';
 
 @Injectable()
@@ -40,12 +44,34 @@ export class MenuService {
     await this.menuRepository.save(reqAddMenuDto);
   }
 
-  async list(){
-    
+  async getList(reqMenuListDto: ReqMenuListDto) {
+    const where: FindOptionsWhere<Menu> = {};
+    if (reqMenuListDto.menu_name) {
+      where.menu_name = Like(`%${reqMenuListDto.menu_name}%`);
+    }
+    if (reqMenuListDto.status) {
+      where.status = reqMenuListDto.status;
+    }
+    return await this.menuRepository
+      .createQueryBuilder('menu')
+      .where(where)
+      .orderBy('menu.order', 'ASC')
+      .addOrderBy('menu.create_time', 'ASC')
+      .getRawMany();
   }
 
   async findById(id: number) {
     return this.menuRepository.findOneBy({ id });
+  }
+
+  async getTree() {
+    const menus = await this.menuRepository
+      .createQueryBuilder('menu')
+      .select('menu.id', 'id')
+      .addSelect('menu.menu_name', 'label')
+      .addSelect('menu.parendId', 'parentId')
+      .orderBy('menu.order', 'ASC')
+      .getRawMany();
   }
 
   async getMenuByIds(ids: number[]) {

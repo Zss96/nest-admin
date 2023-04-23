@@ -73,6 +73,7 @@ export class RoleService {
       where.status = reqRoleListDto.status;
     }
 
+    //1是升序，-1降序
     const result = await this.roleRepository.findAndCount({
       where,
       order: {
