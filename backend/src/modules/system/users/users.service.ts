@@ -31,7 +31,7 @@ export class UsersService {
   //添加用户
   async addUser(reqAddUserDto: ReqAddUserDto) {
     const user = await this.getUserForName(reqAddUserDto.user_name);
-    if (user) throw new ApiException('该用户名已存在');
+    if (!user) throw new ApiException('该用户名已存在');
     const roles = await this.roleService.getRoleByIds(reqAddUserDto.roleIds);
     reqAddUserDto.roles = roles;
     const salt = makeSalt();

@@ -26,14 +26,14 @@ export class User extends BaseEntity {
   user_name: string;
 
   //加密后密码
-  @ApiHideProperty()
+  // @ApiHideProperty()
   @Column({
     comment: '加密后密码',
     length: 100,
     default: '',
     select: false,
   })
-  @IsEmpty()
+  // @IsEmpty()
   @IsString()
   password: string;
 

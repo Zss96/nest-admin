@@ -26,6 +26,10 @@ export class MenuController {
   async getList(@Query() reqMenuListDto: ReqMenuListDto) {
     return this.menuService.getList(reqMenuListDto);
   }
+  @Get('tree')
+  async getTree(){
+    return this.menuService.getTree()
+  }
 
   @Get(':id')
   async getMenuById(@Param() id: number) {

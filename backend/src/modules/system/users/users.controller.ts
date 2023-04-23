@@ -28,6 +28,7 @@ export class UsersController {
 
   @Post()
   async addUser(@Body() reqAddUserDto: ReqAddUserDto) {
+    console.log('reqAddUserDto', reqAddUserDto);
     return await this.usersService.addUser(reqAddUserDto);
   }
   @Put()
