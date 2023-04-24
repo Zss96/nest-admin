@@ -1,0 +1,38 @@
+// @import 'variables.less';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  background-color: var(--color-bg-1);
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+//生成类
+.generate-class(@pre,@s,@n,@i:1) when(@i=<@n){
+  .@{pre}-@{i}{
+      @{s}: @i*1px;
+  }
+  .generate-class(@pre,@s,@n, (@i + 1))
+}
+
+.generate-class(fs,font-size,40);
+.generate-class(ma,margin,40);
+.generate-class(mr,margin-right,40);
+.generate-class(ml,margin-left,40);
+.generate-class(mt,margin-top,40);
+.generate-class(mb,margin-bottom,40);
+.generate-class(pa,padding,40);
+.generate-class(pt,padding-top,40);
+.generate-class(pb,padding-bottom,40);
+.generate-class(pl,padding-left,40);
+.generate-class(pr,padding-right,40);
