@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div class="login pa-30">
+      <h2>Nest Admin</h2>
       <a-form
         :model="formState"
         name="basic"
@@ -24,9 +25,13 @@
         >
           <a-input-password v-model:value="formState.password" />
         </a-form-item>
-
-        <a-form-item name="remember" :wrapper-col="{ offset: 8, span: 16 }">
-          <a-checkbox v-model:checked="formState.remember">Remember me</a-checkbox>
+        <a-form-item
+          label="验证码"
+          name="password"
+          :rules="[{ required: true, message: 'Please input your password!' }]"
+        >
+          <a-input v-model:value="formState.password" style="width: 200px" />
+          <img src="" alt="" />
         </a-form-item>
 
         <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
@@ -80,6 +85,9 @@ export default defineComponent({
     width: 500px;
     border-radius: 20px;
     background-color: #fff;
+    h2 {
+      text-align: center;
+    }
   }
 }
 </style>

@@ -51,10 +51,10 @@ import { ResTransformInterceptor } from 'src/common/interceptors/res-transform.i
       }),
     },
     //jwt守卫
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: JwtAuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
     {
       provide: APP_INTERCEPTOR,
       useClass: ResTransformInterceptor,

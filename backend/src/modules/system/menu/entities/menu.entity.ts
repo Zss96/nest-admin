@@ -99,7 +99,7 @@ export class Menu extends BaseEntity {
     default: 1,
   })
   @IsOptional()
-  @IsString()
+  @IsNumber()
   isCache?: number;
 
   @ApiHideProperty()

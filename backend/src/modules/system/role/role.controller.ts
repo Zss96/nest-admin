@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { RoleService } from './role.service';
 import {
@@ -20,7 +21,7 @@ import { ApiTags } from '@nestjs/swagger';
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
   @Get('list')
-  async getList(reqRoleListDto: ReqRoleListDto) {
+  async getList(@Query() reqRoleListDto: ReqRoleListDto) {
     return await this.roleService.getList(reqRoleListDto);
   }
   @Post()

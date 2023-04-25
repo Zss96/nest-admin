@@ -4,6 +4,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -33,6 +34,7 @@ export class Role extends BaseEntity {
 
   @Column({
     comment: '状态(1正常，0停用)',
+    default: 1,
   })
   status: number;
 
@@ -42,6 +44,6 @@ export class Role extends BaseEntity {
 
   @ApiHideProperty()
   @ManyToMany(() => Menu, (menu) => menu.roles)
-  @JoinColumn()
+  @JoinTable()
   menus: Menu[];
 }

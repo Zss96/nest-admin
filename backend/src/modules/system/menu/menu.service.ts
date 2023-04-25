@@ -1,3 +1,4 @@
+import { SharedService } from './../../../shared/shared.service';
 import { ReqUpdateRoleDto } from './../role/dto/req-role.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,6 +15,7 @@ import { ApiException } from 'src/common/exceptions/api.exception';
 export class MenuService {
   constructor(
     @InjectRepository(Menu) private readonly menuRepository: Repository<Menu>,
+    private readonly sharedService: SharedService,
   ) {}
 
   //通过名字查询菜单
@@ -32,6 +34,8 @@ export class MenuService {
 
   //修改菜单
   async updateMenu(updateMenuDto: UpdateMenuDto) {
+    const menu = await this.findById(updateMenuDto.id);
+    if (!menu) throw new ApiException('菜单不存在');
     return await this.save(updateMenuDto);
   }
 
@@ -42,6 +46,16 @@ export class MenuService {
       reqAddMenuDto.parent = parentMenu;
     }
     await this.menuRepository.save(reqAddMenuDto);
+  }
+
+  //删除
+  async delete(id: number) {
+    await this.menuRepository
+      .createQueryBuilder('menu')
+      .delete()
+      .from(Menu)
+      .where('id=:id', { id })
+      .execute();
   }
 
   async getList(reqMenuListDto: ReqMenuListDto) {
@@ -69,16 +83,32 @@ export class MenuService {
       .createQueryBuilder('menu')
       .select('menu.id', 'id')
       .addSelect('menu.menu_name', 'label')
-      .addSelect('menu.parendId', 'parentId')
+      .addSelect('menu.parentId', 'parentId')
       .orderBy('menu.order', 'ASC')
       .getRawMany();
+
+    return this.sharedService.handleTree(menus);
   }
 
   async getMenuByIds(ids: number[]) {
-    return this.menuRepository.find({
+    return await this.menuRepository.find({
       where: {
         id: In(ids),
       },
     });
+  }
+
+  async getAllPermsByRoles(ids: number[]) {
+    const menuList = await this.menuRepository
+      .createQueryBuilder('menu')
+      .select('menu.perms')
+      .innerJoin('menu.roles', 'role')
+      .where('menu.perms is not null')
+      .andWhere("menu.perms !=''")
+      .andWhere('role.status = 0 and role.id IN(:...ids)', {
+        ids,
+      })
+      .getMany();
+    return menuList.map((item) => item.perms);
   }
 }

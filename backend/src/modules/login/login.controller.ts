@@ -12,9 +12,11 @@ import { LoginService } from './login.service';
 import { ApiBasicAuth, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/common/decorators/public.decorator';
 import { AuthGuard } from '@nestjs/passport';
+import { User } from 'src/common/decorators/user.decorator';
 
 @ApiTags('登录')
 @Controller()
+@ApiBasicAuth()
 export class LoginController {
   constructor(private readonly loginService: LoginService) {}
   @Get('captchaImage')
@@ -29,10 +31,8 @@ export class LoginController {
     return await this.loginService.login(req);
   }
 
-  @Get('user-info')
-  // @ApiBasicAuth()
-  // @UseGuards(AuthGuard('jwt'))
-  getinfo() {
-    return 'info';
+  @Get('userInfo')
+  async getInfo(@User('id') id: number) {
+    return await this.loginService.getInfo(id);
   }
 }

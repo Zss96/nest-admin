@@ -32,7 +32,7 @@ export class RoleService {
   //添加role
   async addRole(reqAddRoleDto: ReqAddRoleDto) {
     const role = await this.getRoleFormName(reqAddRoleDto.role_name);
-    if (role) throw new ApiException('该角色名已经存在');
+    if (!role) throw new ApiException('该角色名已经存在');
     const menus = await this.menuService.getMenuByIds(reqAddRoleDto.menuIds);
     reqAddRoleDto.menus = menus;
     return await this.roleRepository.save(reqAddRoleDto);
@@ -80,12 +80,11 @@ export class RoleService {
         order: 1,
         create_time: 1,
       },
-      skip: reqRoleListDto.limit,
-      take: (reqRoleListDto.page - 1) * reqRoleListDto.limit,
+      take: reqRoleListDto.limit,
+      skip: (reqRoleListDto.page - 1) * reqRoleListDto.limit,
     });
-
     return {
-      result: [0],
+      result: result[0],
       total: result[1],
     };
   }

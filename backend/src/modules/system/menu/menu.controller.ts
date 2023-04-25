@@ -1,5 +1,14 @@
 import { MenuService } from './menu.service';
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import {
   ReqAddMenuDto,
@@ -27,12 +36,16 @@ export class MenuController {
     return this.menuService.getList(reqMenuListDto);
   }
   @Get('tree')
-  async getTree(){
-    return this.menuService.getTree()
+  async getTree() {
+    return this.menuService.getTree();
   }
 
   @Get(':id')
-  async getMenuById(@Param() id: number) {
+  async getMenuById(@Param('id') id: number) {
     return this.menuService.findById(id);
+  }
+  @Delete(':id')
+  async delete(@Param('id') id: number) {
+    return this.menuService.delete(id);
   }
 }
